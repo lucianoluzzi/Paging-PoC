@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="person" type="br.com.lucianoluzzi.pagingtest.model.entity.Person"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                       android:orientation="vertical"
+                                                       android:background="@android:color/white"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="wrap_content"
+                                                       android:layout_marginTop="1dp"
+                                                       android:padding="5dp">
+
+        <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/id"
+                android:text="@{ String.valueOf(person.uid) }"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="1"/>
+
+        <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/id"
+                app:layout_constraintEnd_toStartOf="@id/middlename"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/name"
+                android:text="@{ person.name }"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Luciano"/>
+
+        <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/name"
+                app:layout_constraintEnd_toStartOf="@id/lastName"
+                android:id="@+id/middlename"
+                android:text="@{ person.middleName }"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Luiz"/>
+
+        <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/middlename"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/lastName"
+                android:text="@{ person.lastName }"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Luzzi"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
