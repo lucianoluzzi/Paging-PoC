@@ -1,9 +1,7 @@
-package br.com.lucianoluzzi.pagingtest
+package br.com.lucianoluzzi.pagingtest.repository.network
 
 import br.com.lucianoluzzi.pagingtest.model.dto.PeopleResponse
-import br.com.lucianoluzzi.pagingtest.model.entity.Person
-import br.com.lucianoluzzi.pagingtest.repository.network.PeopleRemoteRepositoryImpl
-import br.com.lucianoluzzi.pagingtest.repository.network.PeopleService
+import br.com.lucianoluzzi.pagingtest.repository.MockPeopleDataProvider.Companion.getMockedPeople
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
@@ -30,6 +28,7 @@ class PeopleRemoteRepositoryImplTest {
     @Test
     fun `fetchPeople with call exception should return null`() {
         `when`(peopleService.fetchPeople()).thenReturn(null)
+
         assertNull(repository.fetchPeople())
     }
 
@@ -56,28 +55,5 @@ class PeopleRemoteRepositoryImplTest {
         `when`(peopleService.fetchPeople()).thenReturn(mockCall)
 
         assertEquals(peopleResponse.people, repository.fetchPeople())
-    }
-
-    private fun getMockedPeople(): List<Person> {
-        val luciano = Person(
-            1,
-            "luciano",
-            "",
-            "messi"
-        )
-        val virginia = Person(
-            2,
-            "virginia",
-            "tagliafico",
-            "jesus"
-        )
-        val zuleica = Person(
-            2,
-            "cordova",
-            "",
-            "cordova"
-        )
-
-        return listOf(luciano, virginia, zuleica)
     }
 }
