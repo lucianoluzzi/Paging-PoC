@@ -1,6 +1,7 @@
 package br.com.lucianoluzzi.pagingtest.repository
 
 import br.com.lucianoluzzi.pagingtest.repository.MockPeopleDataProvider.Companion.getMockedPeople
+import br.com.lucianoluzzi.pagingtest.repository.MockPeopleDataProvider.Companion.getMockedPerson
 import br.com.lucianoluzzi.pagingtest.repository.network.RemotePeopleRepository
 import br.com.lucianoluzzi.pagingtest.repository.room.LocalPeopleRepository
 import org.junit.Assert.assertEquals
@@ -18,16 +19,15 @@ class PeopleRepositoryImplTest {
     @Mock
     lateinit var remoteRepository: RemotePeopleRepository
 
-    private val repository: PeopleRepositoryImpl by lazy {
-        PeopleRepositoryImpl(
-            localRepository = localRepository,
-            remoteRepository = remoteRepository
-        )
-    }
+    lateinit var repository: PeopleRepositoryImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
+        repository = PeopleRepositoryImpl(
+            localRepository = localRepository,
+            remoteRepository = remoteRepository
+        )
     }
 
     @Test
@@ -88,5 +88,16 @@ class PeopleRepositoryImplTest {
         repository.fetchPeople()
 
         verify(remoteRepository).fetchPeople()
+    }
+
+    @Test
+    fun `fetchPeople with remote repository returning verify persistence called with person`() {
+        val mockedData = getMockedPerson()
+
+        `when`(remoteRepository.fetchPeople())
+            .thenReturn(listOf(mockedData))
+        repository.fetchPeople()
+
+        verify(localRepository).insertPerson(mockedData)
     }
 }
