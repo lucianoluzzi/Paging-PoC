@@ -14,22 +14,22 @@ import org.mockito.MockitoAnnotations
 import retrofit2.Call
 import retrofit2.Response
 
-class PeopleRemoteRepositoryImplTest {
+class RemotePeopleRepositoryImplTest {
     @Mock
     lateinit var peopleService: PeopleService
-    private lateinit var repository: PeopleRemoteRepositoryImpl
+    private lateinit var peopleRepository: RemotePeopleRepositoryImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        repository = PeopleRemoteRepositoryImpl(peopleService)
+        peopleRepository = RemotePeopleRepositoryImpl(peopleService)
     }
 
     @Test
     fun `fetchPeople with call exception should return null`() {
         `when`(peopleService.fetchPeople()).thenReturn(null)
 
-        assertNull(repository.fetchPeople())
+        assertNull(peopleRepository.fetchPeople())
     }
 
     @Test
@@ -41,7 +41,7 @@ class PeopleRemoteRepositoryImplTest {
 
         `when`(peopleService.fetchPeople()).thenReturn(mockCall)
 
-        assertNull(repository.fetchPeople())
+        assertNull(peopleRepository.fetchPeople())
     }
 
     @Test
@@ -54,6 +54,6 @@ class PeopleRemoteRepositoryImplTest {
 
         `when`(peopleService.fetchPeople()).thenReturn(mockCall)
 
-        assertEquals(peopleResponse.people, repository.fetchPeople())
+        assertEquals(peopleResponse.people, peopleRepository.fetchPeople())
     }
 }

@@ -1,12 +1,11 @@
 package br.com.lucianoluzzi.pagingtest.repository.network
 
 import br.com.lucianoluzzi.pagingtest.model.entity.Person
-import br.com.lucianoluzzi.pagingtest.repository.PeopleRepository
 import javax.inject.Inject
 
-class PeopleRemoteRepositoryImpl @Inject constructor(
+class RemotePeopleRepositoryImpl @Inject constructor(
     private val peopleService: PeopleService
-) : PeopleRepository {
+) : RemotePeopleRepository {
 
     override fun fetchPeople(): List<Person>? {
         val response = peopleService.fetchPeople()

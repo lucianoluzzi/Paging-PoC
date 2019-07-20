@@ -10,22 +10,22 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
-class PeopleLocalRepositoryImplTest {
+class LocalPeopleRepositoryImplTest {
     @Mock
     lateinit var peopleDAO: PeopleDAO
-    private lateinit var repository: PeopleLocalRepositoryImpl
+    private lateinit var peopleRepository: LocalPeopleRepositoryImpl
 
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        repository = PeopleLocalRepositoryImpl(peopleDAO)
+        peopleRepository = LocalPeopleRepositoryImpl(peopleDAO)
     }
 
     @Test
     fun `fetchPeople with null response data should return null`() {
         `when`(peopleDAO.fetchPeople()).thenReturn(null)
 
-        assertNull(repository.fetchPeople())
+        assertNull(peopleRepository.fetchPeople())
     }
 
     @Test
@@ -34,7 +34,7 @@ class PeopleLocalRepositoryImplTest {
 
         `when`(peopleDAO.fetchPeople()).thenReturn(expectedReturn)
 
-        assertEquals(expectedReturn, repository.fetchPeople())
+        assertEquals(expectedReturn, peopleRepository.fetchPeople())
     }
 
     @Test
@@ -43,7 +43,7 @@ class PeopleLocalRepositoryImplTest {
 
         `when`(peopleDAO.containsPerson(uid)).thenReturn(1)
 
-        assertTrue(repository.containsPerson(uid))
+        assertTrue(peopleRepository.containsPerson(uid))
     }
 
     @Test
@@ -52,14 +52,14 @@ class PeopleLocalRepositoryImplTest {
 
         `when`(peopleDAO.containsPerson(uid)).thenReturn(0)
 
-        assertFalse(repository.containsPerson(uid))
+        assertFalse(peopleRepository.containsPerson(uid))
     }
 
     @Test
     fun `insertPerson should pass received data to DAO`() {
         val expectedInsertion = getMockedPerson()
 
-        repository.insertPerson(expectedInsertion)
+        peopleRepository.insertPerson(expectedInsertion)
 
         verify(peopleDAO).insertPerson(expectedInsertion)
     }

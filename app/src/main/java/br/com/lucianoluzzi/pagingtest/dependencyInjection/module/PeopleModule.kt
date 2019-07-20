@@ -4,11 +4,11 @@ import android.app.Application
 import androidx.room.Room
 import br.com.lucianoluzzi.pagingtest.repository.PeopleRepository
 import br.com.lucianoluzzi.pagingtest.repository.PeopleRepositoryImpl
-import br.com.lucianoluzzi.pagingtest.repository.network.PeopleRemoteRepositoryImpl
+import br.com.lucianoluzzi.pagingtest.repository.network.RemotePeopleRepositoryImpl
 import br.com.lucianoluzzi.pagingtest.repository.network.PeopleService
 import br.com.lucianoluzzi.pagingtest.repository.network.WebClient
 import br.com.lucianoluzzi.pagingtest.repository.room.PeopleDAO
-import br.com.lucianoluzzi.pagingtest.repository.room.PeopleLocalRepositoryImpl
+import br.com.lucianoluzzi.pagingtest.repository.room.LocalPeopleRepositoryImpl
 import br.com.lucianoluzzi.pagingtest.repository.room.PeopleRoomDatabase
 import br.com.lucianoluzzi.pagingtest.repository.room.PeopleRoomDatabase.Companion.DATABASE_NAME
 import dagger.Module
@@ -47,22 +47,22 @@ class PeopleModule
 
     @Reusable
     @Provides
-    fun provideLocalRepository(peopleDAO: PeopleDAO): PeopleLocalRepositoryImpl {
-        return PeopleLocalRepositoryImpl(peopleDAO)
+    fun provideLocalRepository(peopleDAO: PeopleDAO): LocalPeopleRepositoryImpl {
+        return LocalPeopleRepositoryImpl(peopleDAO)
     }
 
     @Reusable
     @Provides
-    fun provideRemoteRepository(service: PeopleService): PeopleRemoteRepositoryImpl {
-        return PeopleRemoteRepositoryImpl(service)
+    fun provideRemoteRepository(service: PeopleService): RemotePeopleRepositoryImpl {
+        return RemotePeopleRepositoryImpl(service)
     }
 
     @Reusable
     @Provides
     fun provideRepository(
-        localRepository: PeopleLocalRepositoryImpl,
-        remoteRepository: PeopleRemoteRepositoryImpl
+        localPeopleRepository: LocalPeopleRepositoryImpl,
+        remotePeopleRepository: RemotePeopleRepositoryImpl
     ): PeopleRepository {
-        return PeopleRepositoryImpl(localRepository, remoteRepository)
+        return PeopleRepositoryImpl(localPeopleRepository, remotePeopleRepository)
     }
 }

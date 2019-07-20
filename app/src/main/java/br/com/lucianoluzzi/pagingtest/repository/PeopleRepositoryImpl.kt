@@ -1,13 +1,13 @@
 package br.com.lucianoluzzi.pagingtest.repository
 
 import br.com.lucianoluzzi.pagingtest.model.entity.Person
-import br.com.lucianoluzzi.pagingtest.repository.network.PeopleRemoteRepositoryImpl
-import br.com.lucianoluzzi.pagingtest.repository.room.PeopleLocalRepositoryImpl
+import br.com.lucianoluzzi.pagingtest.repository.network.RemotePeopleRepository
+import br.com.lucianoluzzi.pagingtest.repository.room.LocalPeopleRepository
 import javax.inject.Inject
 
 class PeopleRepositoryImpl @Inject constructor(
-    private val localRepository: PeopleLocalRepositoryImpl,
-    private val remoteRepository: PeopleRemoteRepositoryImpl
+    private val localRepository: LocalPeopleRepository,
+    private val remoteRepository: RemotePeopleRepository
 ) : PeopleRepository {
 
     override fun fetchPeople(): List<Person>? {
