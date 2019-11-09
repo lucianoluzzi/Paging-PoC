@@ -22,7 +22,7 @@ class PeopleViewModelTest {
 
     @Mock
     lateinit var peopleRepository: PeopleRepository
-    lateinit var viewModel: PeopleViewModel
+    private lateinit var viewModel: PeopleViewModel
 
     @Before
     fun setUp() {

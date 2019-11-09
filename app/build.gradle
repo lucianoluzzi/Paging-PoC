@@ -6,9 +6,20 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'jacoco'
+
 android {
     dataBinding {
         enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     compileSdkVersion 28
@@ -23,11 +34,20 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", 'HOST_URL', '"https://autumn-sky-9358.getsandbox.com"'
+            testCoverageEnabled true
         }
         release {
             buildConfigField "String", 'HOST_URL', '"https://autumn-sky-9358.getsandbox.com"'
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+android.testOptions {
+    unitTests.all {
+        jacoco {
+            includeNoLocationClasses = true
         }
     }
 }
@@ -48,6 +68,7 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:$rootProject.lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycle_version"
     implementation "androidx.paging:paging-runtime-ktx:$rootProject.paging_version"
+    implementation "androidx.fragment:fragment-ktx:$rootProject.fragment_version"
 
     // Network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit_version"
@@ -67,4 +88,34 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$rootProject.room_version"
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.fragment:fragment-testing:$fragment_version"
+    androidTestImplementation 'org.mockito:mockito-core:2.23.0'
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0'
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+
+    def fileFilter = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*',
+                      '**/*Test*.*',
+                      'android/**/*.*',
+                      '**/data/models/*']
+    def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter) + fileTree(
+            dir: "$buildDir/tmp/kotlin-classes/debug",
+            excludes: fileFilter
+    )
+    def mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories = files([mainSrc])
+    classDirectories = files([debugTree])
+    executionData = fileTree(dir: "$buildDir", includes: [
+            "jacoco/testDebugUnitTest.exec",
+            "outputs/code-coverage/connected/*coverage.ec"
+    ])
 }
